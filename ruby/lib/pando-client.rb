@@ -60,9 +60,7 @@ if @args.keys.size >= 3
       pandoToOsc.send(OSC::Message.new(
                        "/pando/new_message",
                        msg['userName'],
-                       msg['message'],
-                       msg['frequency']
-                     ))
+                       msg['frequency']))
     end
 
     @pandoWs.onclose do |code, reason|
