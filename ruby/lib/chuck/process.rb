@@ -1,4 +1,4 @@
-require 'ruby-osc'
+require 'osc-ruby'
 
 module Chuck
   CHUCK_DIR = Dir.new File.expand_path(File.dirname(__FILE__)+'/scripts')
