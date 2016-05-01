@@ -1,20 +1,21 @@
-if (!!me.args) {
+// OSC
+OscIn listener;
+OscMsg msg;
+
+// drones
+Shred loops[0];
+SinOsc sines[0];
+ADSR adsrs [0];
+Gain master => dac;
+master.gain(0.5);
+
+if (!me.args()) {
     chout <= "Please provide a port number" <= IO.nl();
     chout.flush();
 }
 else {
-    // OSC
-    OscIn listener;
-    OscMsg msg;
-    me.args(0) => Std.atoi => int port => listener.port;
-
-    // drones
-    Shred loops[0];
-    SinOsc sines[0];
-    ADSR adsrs [0];
-    Gain master => dac;
-    master.gain(0.5);
-
+    me.arg(0) => Std.atoi => int port => listener.port;
+    
     // main loop
     while (true) {
         listener => now;
@@ -29,24 +30,24 @@ else {
                 <<< "deleteing user", msg.getString(0), "" >>>;
             };
         };
-    }
-}
+    };
+};
 
 fun void addUser (string userName, float frequency) {
     new SinOsc @=> sines[userName];
-    new ADSR @=> adsr[userName];
+    new ADSR @=> adsrs[userName];
     sines[userName].freq(frequency);
     sines[userName].gain(0.3);
     adsrs[userName].set(second, second, 0.0, second);
     sines[userName] => adsrs[userName] => master;
-    spork ~ loop(Math.random2f(10, 20)) @=> loops[userName];
+    spork ~ loop(userName, Math.random2f(10, 20)) @=> loops[userName];
 };
 
 fun void removeUser (string userName) {
-    loops[usreName].kill();
+    loops[userName].exit();
     sines[userName].gain(0.0);
-    adsrs[userName] <= master;
-    sines[userName] <= adsrs[userName];
+    adsrs[userName] =< master;
+    sines[userName] =< adsrs[userName];
     NULL @=> sines[userName];
     NULL @=> adsrs[userName];
 };
