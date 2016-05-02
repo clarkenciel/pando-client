@@ -11,6 +11,7 @@ module PandoClient
     ws/ws
     osc/osc
     modes/modes
+    views/views
   ].each { |f| require_relative f }
 end
 
@@ -33,11 +34,11 @@ class Options
   end
 end # class Options
 
-@args = Options.parse(ARGV)
+# @args = Options.parse(ARGV)
 
-if @args.keys.size >= 3
+# if @args.keys.size >= 3
 
-else
-  puts "Please provide at least the following options: --host HOST, --room ROOMNAME, --user USER"
-end
+# else
+#   puts "Please provide at least the following options: --host HOST, --room ROOMNAME, --user USER"
+# end
 

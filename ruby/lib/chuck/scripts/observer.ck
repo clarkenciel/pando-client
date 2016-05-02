@@ -10,6 +10,10 @@ Gain master => PRCRev rev => dac;
 master.gain(0.5);
 rev.mix(0.2);
 
+// params
+200 => float LO;
+10000 => float HI;
+
 if (!me.args()) {
     chout <= "Please provide a port number" <= IO.nl();
     chout.flush();
@@ -24,15 +28,15 @@ else {
         listener => now;
         while (listener.recv(msg) != 0) {
             if (msg.address == "/add_user") {
-                <<< "adding user", msg.getString(0), msg.getFloat(1), "" >>>;
-                addUser(msg.getString(0), msg.getFloat(1));
+                //<<< "adding user", msg.getString(0), msg.getFloat(1), "" >>>;
+                addUser(msg.getString(0), constrain(msg.getFloat(1), LO, HI));
             }
             else if (msg.address == "/update") {
-                <<< "updating user", msg.getString(0), msg.getFloat(1), "" >>>;
-                updateUser(msg.getString(0), msg.getFloat(1));
+                //<<< "updating user", msg.getString(0), msg.getFloat(1), "" >>>;
+                updateUser(msg.getString(0), constrain(msg.getFloat(1), LO, HI));
             }
             else if (msg.address == "/delete") {
-                <<< "deleting user", msg.getString(0), "" >>>;
+                //<<< "deleting user", msg.getString(0), "" >>>;
                 removeUser(msg.getString(0));
             };
         };
@@ -69,3 +73,12 @@ fun void loop (string userName, float period) {
         period::second => now;
     }
 };
+
+fun float constrain(float in, float lo, float hi) {
+    in <= 0.0 ? 1.0 : in => float out;
+    while (out < lo || hi < out) {
+        if (out < lo) 2 *=> out;
+        if (hi < out) 0.5 *=> out;
+    }
+    return out;
+}

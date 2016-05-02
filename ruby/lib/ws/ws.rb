@@ -6,10 +6,9 @@ module PandoSocket
                    onmessage=->(m,t){default_message(m,t)},
                    onclose=->(c,r){default_close(c,r)},
                    onerror=->(e){default_error(e)})
-    #Thread.new do
+    Thread.new do
       EM.run do
-        ws = WebSocket::EventMachine::Client.connect(
-          :uri => "ws://#{pando_server}/pando/api/connect/#{room_name}/#{user_name}")
+        ws = WebSocket::EventMachine::Client.connect(:uri => "ws://#{pando_server}/pando/api/connect/#{room_name}/#{user_name}")
 
         ws.onopen(&onopen)
         ws.onmessage(&onmessage)
@@ -22,7 +21,7 @@ module PandoSocket
                                  roomName: room_name}))
         end
       end
-    #end
+    end
   end
 
   def self.default_open(response)
