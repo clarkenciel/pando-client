@@ -1,8 +1,3 @@
-require 'osc-ruby'
-require 'osc-ruby/em_server'
-require 'json'
-require 'websocket-eventmachine-client'
-
 module Modes
   class Relay
     def initialize(pando_server, room_name, chuck_port=5375)

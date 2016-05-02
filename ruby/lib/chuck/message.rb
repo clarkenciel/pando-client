@@ -1,5 +1,3 @@
-require 'ruby-osc'
-
 module Chuck
   class Message
     def fromJSON(json)

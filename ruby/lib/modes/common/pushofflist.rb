@@ -10,6 +10,7 @@ module Common
     end
 
     def add(*values)
+      puts values
       if @contents.size + values.size > @max_size
         dif = @contents.size + values.size - @max_size
         @contents.concat(values).shift(dif)
