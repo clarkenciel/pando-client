@@ -8,7 +8,7 @@ require 'osc-ruby/em_server'
 module PandoClient
   %w[
     chuck/chuck
-    ws/ws
+    pando/pando
     osc/osc
     modes/modes
     views/views
