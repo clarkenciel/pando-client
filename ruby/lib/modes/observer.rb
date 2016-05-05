@@ -6,7 +6,7 @@ module Modes
       @server = pando_server
       @room_name = room_name
       @chuck = Chuck::Process.new("observer.ck", chuck_port)
-      @messages = Common::PushOffList.new 20
+      @messages = Common::PushOffList.new 100
       @users = []
       @socket = PandoSocket.connect(
         pando_server, room_name, 'observer',
