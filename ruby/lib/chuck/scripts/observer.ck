@@ -54,21 +54,25 @@ fun void addUser (string userName, float frequency) {
 };
 
 fun void removeUser (string userName) {
-    Machine.remove(loops[userName].id());
-    sines[userName].gain(0.0);
-    adsrs[userName] =< master;
-    sines[userName] =< adsrs[userName];
-    NULL @=> sines[userName];
-    NULL @=> adsrs[userName];
+    if (loops[userName] != NULL) {
+        Machine.remove(loops[userName].id());
+        sines[userName].gain(0.0);
+        adsrs[userName] =< master;
+        sines[userName] =< adsrs[userName];
+        NULL @=> sines[userName];
+        NULL @=> adsrs[userName];
+    }
 };
 
 fun void updateUser (string userName, float frequency) {
-    frequency => sines[userName].freq;
-    adsrs[userName].keyOn(1);
+    if (sines[userName] != NULL) {
+        frequency => sines[userName].freq;
+        adsrs[userName].keyOn(1);
+    }
 };
 
 fun void loop (string userName, float period) {
-    while (true) {
+    while (adsrs[userName] != NULL) {
         adsrs[userName].keyOn(1);
         period::second => now;
     }

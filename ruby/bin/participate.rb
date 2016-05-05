@@ -14,11 +14,16 @@ tag_close_regexp = /<\/.*>/
 times = [5, 10, 20].map { |s| s * 60 }
 
 while true do
-  msg = CGI.unescapeHTML(Net::HTTP.get(uri).
+  msg = nil
+  begin
+    msg = CGI.unescapeHTML(Net::HTTP.get(uri).
                           match(h2_regexp)[1].
                           split(tag_open_regexp,2).
                           join)
-  p.send_message(msg) if [true,false][rand(0..1)]
-  sleep times[rand(0..times.size-1)]
+  rescue
+    msg = 'I have no further advice for you'
+  end
+  p.send_message(msg)
+  sleep(5 * 60)
 end
 
