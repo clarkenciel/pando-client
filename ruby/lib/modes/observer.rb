@@ -15,7 +15,7 @@ module Modes
           (@users = users).each { |u| @chuck.send '/add_user', u['userName'], u['frequency'] }          
         end,
         onmessage = ->(message, type) do
-          message = JSON.parse(message)
+          message = JSON.parse(message)          
           #puts message
           if message['type'] == 'message'
             if message['message'].include? 'has left'
@@ -31,7 +31,7 @@ module Modes
             else
               @chuck.send '/update', message['userName'], message['frequency']
             end
-            @messages.add({:user => message['userName'], :message => message['message']})            
+            @messages.add({:user => message['userName'], :message => message['message']})
           end
         end,
         onerror = ->(*error) do
